@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "groovy"
+    id "org.kordamp.gradle.errorprone" version "0.47.0"
 }
 group "com.aor.refactoring"
 version "1.0-SNAPSHOT"

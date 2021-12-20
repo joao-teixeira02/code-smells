@@ -28,7 +28,7 @@ public class OrderLine {
     public double getTotal() {
         return getProduct().getPrice() * getQuantity();
     }
-
+    @Override
     public String toString() {
         return product.getName() + "(x" + quantity + "): " + (product.getPrice() * quantity) + "\n";
     }
