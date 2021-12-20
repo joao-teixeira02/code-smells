@@ -6,27 +6,12 @@ import java.util.Date;
 import java.util.List;
 
 public class Tree {
-    public Date plantedAt;
-    public String locationLatitude;
-    public String locationLongitude;
-    public String locationName;
-    private List<Date> appraisalDates;
+    private final List<Date> appraisalDates;
 
-    public Tree(Date plantedAt, String locationLatitude, String locationLongitude, String locationName){
-        this.plantedAt = plantedAt;
-        this.setLocation(locationLatitude, locationLongitude, locationName);
+    public Tree(){
         this.appraisalDates = new ArrayList<>();
     }
 
-    public void setLocation(String locationLatitude, String locationLongitude, String locationName){
-        this.locationLatitude = locationLatitude;
-        this.locationLongitude = locationLongitude;
-        this.locationName = locationName;
-    }
-
-    public String toString() {
-        return "Tree planted at " + this.plantedAt.toString() + " in location " + this.locationLatitude + "," + this.locationLongitude + " (" + this.locationName + ")";
-    }
 
     void addAppraisal(Date appraisalDate) {
         this.appraisalDates.add(appraisalDate);
@@ -38,6 +23,15 @@ public class Tree {
 
     public boolean isNextAppraisalOverdue(){
         Date today = new Date();
+
+        Date latestAppraisalDate = latestDate(today);
+
+        Date nextAppraisalDate = nextDate(latestAppraisalDate);
+        // Appraisal is only overdue if its date is in the past
+        return nextAppraisalDate.before(today);
+    }
+
+    private Date latestDate(Date today){
         Date latestAppraisalDate = today;
 
         if (this.appraisalDates.size() > 0) {
@@ -48,8 +42,10 @@ public class Tree {
                 latestAppraisalDate = appraisalDate;
             }
         }
+        return latestAppraisalDate;
+    }
 
-        // Calculate next appraisal date
+    private Date nextDate(Date latestAppraisalDate){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(latestAppraisalDate);
         calendar.add(Calendar.MONTH, 3);
@@ -59,8 +55,7 @@ public class Tree {
         else if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)
             calendar.add(Calendar.DAY_OF_MONTH, 2);
 
-        Date nextAppraisalDate = calendar.getTime();
-        // Appraisal is only overdue if its date is in the past
-        return nextAppraisalDate.before(today);
+        return calendar.getTime();
     }
+
 }

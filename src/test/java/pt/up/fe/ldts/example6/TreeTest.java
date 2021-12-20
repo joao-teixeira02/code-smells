@@ -1,47 +1,49 @@
 package pt.up.fe.ldts.example6;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static org.junit.Assert.*;
-
 public class TreeTest {
     public Tree tree;
+    public Location treeLocation;
     public Date date;
 
     @BeforeEach
     public void setUp() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         date = sdf.parse("31-08-2002 10:20:56");
-        tree = new Tree(date, "41.177772696363114", "-8.59843522310257", "FEUP");
+        treeLocation = new Location(date, "41.177772696363114", "-8.59843522310257", "FEUP");
+        tree = new Tree();
     }
 
     @Test
     public void testTreeCreation() {
-        assertEquals(tree.plantedAt, date);
-        assertEquals(tree.locationLatitude, "41.177772696363114");
-        assertEquals(tree.locationLongitude, "-8.59843522310257");
-        assertEquals(tree.locationName, "FEUP");
+        Assertions.assertEquals(treeLocation.plantedAt, date);
+        Assertions.assertEquals(treeLocation.locationLatitude, "41.177772696363114");
+        Assertions.assertEquals(treeLocation.locationLongitude, "-8.59843522310257");
+        Assertions.assertEquals(treeLocation.locationName, "FEUP");
     }
 
     @Test
     public void testTreeSetLocation() {
-        tree.setLocation("loclat", "loclon", "locname");
-        assertEquals(tree.plantedAt, date);
-        assertEquals(tree.locationLatitude, "loclat");
-        assertEquals(tree.locationLongitude, "loclon");
-        assertEquals(tree.locationName, "locname");
+        treeLocation.setLocation("loclat", "loclon", "locname");
+        Assertions.assertEquals(treeLocation.plantedAt, date);
+        Assertions.assertEquals(treeLocation.locationLatitude, "loclat");
+        Assertions.assertEquals(treeLocation.locationLongitude, "loclon");
+        Assertions.assertEquals(treeLocation.locationName, "locname");
     }
 
     @Test
     public void testToString() {
-        String result = tree.toString();
-        assertEquals("Tree planted at Sat Aug 31 10:20:56 WEST 2002 in location 41.177772696363114,-8.59843522310257 (FEUP)", result);
+        String result = treeLocation.toString();
+        Assertions.assertEquals("Tree planted at Sat Aug 31 10:20:56 WEST 2002 in location 41.177772696363114,-8.59843522310257 (FEUP)", result);
     }
 
     @Test
@@ -49,9 +51,9 @@ public class TreeTest {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
         Date appraisalDate = sdf.parse("31-08-2002 10:20:56");
 
-        assertEquals(tree.getAppraisals().size(), 0);
+        Assertions.assertEquals(tree.getAppraisals().size(), 0);
         tree.addAppraisal(appraisalDate);
-        assertEquals(tree.getAppraisals().size(), 1);
+        Assertions.assertEquals(tree.getAppraisals().size(), 1);
     }
 
     @Test
@@ -61,9 +63,9 @@ public class TreeTest {
         calendar.add(Calendar.MONTH, -6);
         Date appraisalDate = calendar.getTime();
 
-        assertFalse(tree.isNextAppraisalOverdue());
+        Assertions.assertFalse(tree.isNextAppraisalOverdue());
         tree.addAppraisal(appraisalDate);
-        assertTrue(tree.isNextAppraisalOverdue());
+        Assertions.assertTrue(tree.isNextAppraisalOverdue());
     }
 
     @Test
@@ -73,9 +75,9 @@ public class TreeTest {
         calendar.add(Calendar.MONTH, -1);
         Date appraisalDate = calendar.getTime();
 
-        assertFalse(tree.isNextAppraisalOverdue());
+        Assertions.assertFalse(tree.isNextAppraisalOverdue());
         tree.addAppraisal(appraisalDate);
-        assertFalse(tree.isNextAppraisalOverdue());
+        Assertions.assertFalse(tree.isNextAppraisalOverdue());
     }
 
 }
